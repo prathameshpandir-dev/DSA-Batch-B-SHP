@@ -8,7 +8,7 @@ int main(){
     cout<<"Enter the number of elements in array: ";
     cin>>no;
 
-    int arr[n];
+    int arr[no];
 
     for(i=0;i<no;i++){
         cout<<"Enter the "<<i+1<<" element: ";

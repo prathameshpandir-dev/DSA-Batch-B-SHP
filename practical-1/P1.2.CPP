@@ -3,9 +3,10 @@
 using namespace std;
 
 int main() {
-    int arr[100];
+
     int n;
     cin>>n;
+     int arr[n];
     set<int> s;
     int i, j;
     int count;
@@ -15,7 +16,7 @@ int main() {
     }
     for(int i=0;i<n;i++)
     {
-        s.insert(arr[i])
+        s.insert(arr[i]);
     }
 
     for(auto a : s) {
@@ -27,11 +28,11 @@ int main() {
             count++;
         }
         }
-        
-        
 
-        if(count>= 1) {
-            cout << arr[i] << " duplicated " << count+1 << " times" << endl;
+
+
+        if(count> 1) {
+            cout << a << " duplicated " << count << " times" << endl;
         }
     }
 

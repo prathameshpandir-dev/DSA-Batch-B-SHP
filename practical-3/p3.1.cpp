@@ -66,9 +66,13 @@ int main()
     }
     int n=sizeof(arr)/sizeof(arr[0]);
     int c;
-    cout<<"1-Selection sort \n 2- bubble sort \n 3-insertion sort "<<endl;
-    cin>>c;
 
+
+    while(c!=4)
+
+    {
+        cout<<"\n 1-Selection sort \n 2- bubble sort \n 3-insertion sort \n 4-exit "<<endl;
+    cin>>c;
         switch(c)
         {
             case 1: selectionsort(arr,n);
@@ -79,9 +83,13 @@ int main()
 
             case 3: insertionsort(arr,n);
                         break;
+            case 4 : cout<<"Exiting.....";
 
             default: cout<<"Invalid Entry"<<endl;
         }
+
+    }
+
 
 
 

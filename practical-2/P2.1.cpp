@@ -36,7 +36,7 @@ int main()
 
 
 
-        p=searchingg(ab,s,no);
+        int p=searchingg(ab,s,no);
         if(p==(-1))
         {
            cout<<"\n The car is at "<<searchingg(ab,s,n,no)<<"Position"<<endl;
