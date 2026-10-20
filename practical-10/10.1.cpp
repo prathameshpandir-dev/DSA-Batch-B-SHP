@@ -1,22 +1,36 @@
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
-int main(){
-    const int n=10;
-    int table[n];
-    fill(table,table+n,-1);
-    int q;
-    cin>>q;
-    while(q--){
-        int x;
-        cin>>x;
-        int pos=x%10,tries=0;
-        while(table[pos]!=-1&&tries<n){pos=(pos+1)%n;
-        tries++;
+
+int main() {
+    int hash[10], n, x;
+
+    for (int i = 0; i < 10; i++)
+        hash[i] = -1;
+
+    cout << "Enter number of vehicles: ";
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        cout << "Enter registration number: ";
+        cin >> x;
+
+        int pos = x % 10;
+        int count = 0;
+
+        while (hash[pos] != -1 && count < 10) {
+            pos = (pos + 1) % 10;
+            count++;
         }
-        if(tries==n) cout<<"Full\n";
-        else table[pos]=x;
+
+        if (count == 10)
+            cout << "Parking lot is full\n";
+        else
+            hash[pos] = x;
     }
-    for(int i=0;
-    i<n;
-    i++) cout<<i<<": "<<table[i]<<"\n";
+
+    cout << "Parking slots:\n";
+    for (int i = 0; i < 10; i++)
+        cout << i << " : " << hash[i] << endl;
+
+    return 0;
 }

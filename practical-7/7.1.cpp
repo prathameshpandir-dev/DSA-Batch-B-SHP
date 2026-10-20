@@ -1,41 +1,57 @@
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
-struct Node{
-    string name;
-    Node *next;
-    Node(string s){name=s;
-    next=NULL;
-    }
-};
-Node *front=NULL,*rear=NULL;
-void add(string s){
-    Node *p=new Node(s);
-    if(!rear) front=rear=p;
-    else{rear->next=p;
-    rear=p;
+
+int q[100], front = -1, rear = -1, n;
+
+void join(int x) {
+    if (rear == n - 1)
+        cout << "Queue Overflow\n";
+    else {
+        if (front == -1)
+            front = 0;
+        q[++rear] = x;
     }
 }
-void removePatient(){
-    if(!front){cout<<"Empty\n";
-    return;
+
+void serve() {
+    if (front == -1 || front > rear)
+        cout << "Queue Underflow\n";
+    else {
+        front++;
+        if (front > rear)
+            front = rear = -1;
     }
-    Node *p=front;
-    front=front->next;
-    if(!front) rear=NULL;
-    delete p;
 }
-int main(){
-    int q;
-    cin>>q;
-    while(q--){
-        int op;
-        cin>>op;
-        if(op==1){string s;
-        cin>>s;
-        add(s);
+
+void display() {
+    if (front == -1)
+        cout << "Queue is empty\n";
+    else
+        cout << q[front] << endl;
+}
+
+int main() {
+    int ch, x;
+    cout<<"No of entries"<<endl;
+    cin>>n;
+
+    do {
+        cout<<"1-ADD\n2-delete\n3-display\n 0-exit"<<endl;
+        cin >> ch;
+
+        switch (ch) {
+            case 1:
+                cin >> x;
+                join(x);
+                break;
+            case 2:
+                serve();
+                break;
+            case 3:
+                display();
+                break;
         }
-        else if(op==2) removePatient();
-        if(front) cout<<front->name<<"\n";
-        else cout<<"Empty\n";
-    }
+    } while (ch != 0);
+
+    return 0;
 }

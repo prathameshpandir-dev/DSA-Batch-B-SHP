@@ -1,38 +1,48 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <string>
 using namespace std;
-struct Node{
+
+string st[50];
+int top = -1;
+
+void visit(string page) {
+    st[++top] = page;
+}
+
+void back() {
+    if (top > 0)
+        top--;
+    else
+        cout << "No previous page\n";
+}
+
+void display() {
+    if (top == -1)
+        cout << "No page visited\n";
+    else
+        cout << st[top] << endl;
+}
+
+int main() {
+    int ch;
     string page;
-    Node *next;
-    Node(string s){page=s;
-    next=NULL;
-    }
-};
-Node *top=NULL;
-void push(string s){
-    Node *p=new Node(s);
-    p->next=top;
-    top=p;
-}
-void popPage(){
-    if(!top){cout<<"No page\n";
-    return;
-    }
-    Node *p=top;
-    top=top->next;
-    delete p;
-}
-int main(){
-    int q;
-    cin>>q;
-    while(q--){
-        int op;
-        cin>>op;
-        if(op==1){string s;
-        cin>>s;
-        push(s);
+
+    do {
+        cin >> ch;
+
+        switch (ch) {
+            case 1:
+                cin >> page;
+                visit(page);
+                break;
+            case 2:
+                back();
+                break;
+            case 3:
+                display();
+                break;
         }
-        else if(op==2) popPage();
-        if(top) cout<<top->page<<"\n";
-        else cout<<"Empty\n";
-    }
+    } while (ch != 0);
+
+    return 0;
 }

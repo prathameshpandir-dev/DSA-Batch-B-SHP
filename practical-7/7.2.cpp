@@ -1,32 +1,68 @@
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
-int main(){
-    int n,q;
-    cin>>n>>q;
-    vector<int> que(n);
-    int front=0,rear=-1,count=0;
-    while(q--){
-        int op;
-        cin>>op;
-        if(op==1){
-            int x;
-            cin>>x;
-            if(count==n) cout<<"Overflow\n";
-            else{rear=(rear+1)%n;
-            que[rear]=x;
-            count++;
-            cout<<que[front]<<"\n";
-            }
-        }else if(op==2){
-            if(count==0) cout<<"Underflow\n";
-            else{front=(front+1)%n;
-            count--;
-            if(count==0)rear=-1;
-            else cout<<que[front]<<"\n";
-            }
-        }else if(op==3){
-            if(count==0) cout<<"Empty\n";
-            else cout<<que[front]<<"\n";
-        }
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+Node *front = NULL, *rear = NULL;
+
+void arrive(int x) {
+    Node* newNode = new Node{x, NULL};
+
+    if (rear == NULL)
+        front = rear = newNode;
+    else {
+        rear->next = newNode;
+        rear = newNode;
     }
+}
+
+void attend() {
+    if (front == NULL) {
+        cout << "Queue is empty\n";
+        return;
+    }
+
+    Node* temp = front;
+    front = front->next;
+
+    if (front == NULL)
+        rear = NULL;
+
+    delete temp;
+}
+
+void display() {
+    if (front == NULL) {
+        cout << "No patients waiting\n";
+        return;
+    }
+
+    cout << front->data << endl;
+}
+
+int main() {
+    int ch, x;
+
+    do {
+            cout<<"1-ADD\n2-delete\n3-display\n 0-exit"<<endl;
+        cin >> ch;
+
+        switch (ch) {
+            case 1:
+                cin >> x;
+                arrive(x);
+                break;
+            case 2:
+                attend();
+                break;
+            case 3:
+                display();
+                break;
+        }
+    } while (ch != 0);
+
+    return 0;
 }

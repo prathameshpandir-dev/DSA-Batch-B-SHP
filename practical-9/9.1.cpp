@@ -1,38 +1,68 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <queue>
 using namespace std;
-int main(){
-    int n,m;
-    cin>>n>>m;
-    vector<vector<int>> g(n);
-    for(int i=0;
-    i<m;
-    i++){
-        int u,v;
-        cin>>u>>v;
-        g[u].push_back(v);
-        g[v].push_back(u);
+
+int adj[100][100], n;
+bool visited[100];
+
+void dfs(int v) {
+    visited[v] = true;
+    cout << v << " ";
+
+    for (int i = 0; i < n; i++) {
+        if (adj[v][i] == 1 && !visited[i])
+            dfs(i);
     }
-    int start;
-    cin>>start;
-    vector<int> vis(n,0);
-    function<void(int)> dfs=[&](int u){
-        vis[u]=1;
-        cout<<u<<" ";
-        for(int v:g[u]) if(!vis[v]) dfs(v);
-    };
-    dfs(start);
-    cout<<"\n";
-    fill(vis.begin(),vis.end(),0);
+}
+
+void bfs(int start) {
+    bool vis[100] = {false};
     queue<int> q;
+
     q.push(start);
-    vis[start]=1;
-    while(!q.empty()){
-        int u=q.front();
+    vis[start] = true;
+
+    while (!q.empty()) {
+        int v = q.front();
         q.pop();
-        cout<<u<<" ";
-        for(int v:g[u]) if(!vis[v]){vis[v]=1;
-        q.push(v);
+        cout << v << " ";
+
+        for (int i = 0; i < n; i++) {
+            if (adj[v][i] == 1 && !vis[i]) {
+                q.push(i);
+                vis[i] = true;
+            }
         }
     }
-    cout<<"\n";
+}
+
+int main() {
+    int e, u, v, start;
+
+    cout << "Enter number of vertices: ";
+    cin >> n;
+
+    cout << "Enter number of edges: ";
+    cin >> e;
+
+    for (int i = 0; i < e; i++) {
+        cout << "Enter edge (u v): ";
+        cin >> u >> v;
+        adj[u][v] = 1;
+        adj[v][u] = 1;
+    }
+
+    cout << "Enter starting vertex: ";
+    cin >> start;
+
+    cout << "DFS: ";
+    dfs(start);
+
+    for (int i = 0; i < n; i++)
+        visited[i] = false;
+
+    cout << "\nBFS: ";
+    bfs(start);
+
+    return 0;
 }

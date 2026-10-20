@@ -1,138 +1,113 @@
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
-struct SNode{
-    int data;
-    SNode *next;
-    SNode(int x){data=x;
-    next=NULL;
-    }
+
+struct Node {
+    string song;
+    Node* prev;
+    Node* next;
 };
-struct DNode{
-    int data;
-    DNode *prev,*next;
-    DNode(int x){data=x;
-    prev=next=NULL;
-    }
-};
-SNode *sh=NULL,*st=NULL;
-DNode *dh=NULL,*dt=NULL;
-void addS(int x,int pos){
-    SNode *p=new SNode(x);
-    if(!sh){sh=st=p;
-    p->next=p;
-    return;
-    }
-    if(pos<=1){p->next=sh;
-    sh=p;
-    st->next=sh;
-    return;
-    }
-    SNode *q=sh;
-    for(int i=1;
-    i<pos-1 && q->next!=sh;
-    i++) q=q->next;
-    p->next=q->next;
-    q->next=p;
-    if(q==st) st=p;
+
+Node* head = NULL;
+
+void insertBegin(string song) {
+    Node* newNode = new Node{song, NULL, head};
+
+    if (head != NULL)
+        head->prev = newNode;
+
+    head = newNode;
 }
-void delS(int x){
-    if(!sh)return;
-    if(sh->data==x){
-        if(sh==st){delete sh;
-        sh=st=NULL;
-        return;
-        }
-        SNode *p=sh;
-        sh=sh->next;
-        st->next=sh;
-        delete p;
+
+void insertEnd(string song) {
+    Node* newNode = new Node{song, NULL, NULL};
+
+    if (head == NULL) {
+        head = newNode;
         return;
     }
-    SNode *q=sh;
-    while(q->next!=sh && q->next->data!=x) q=q->next;
-    if(q->next!=sh){
-        SNode *p=q->next;
-        q->next=p->next;
-        if(p==st) st=q;
-        delete p;
-    }
+
+    Node* temp = head;
+    while (temp->next != NULL)
+        temp = temp->next;
+
+    temp->next = newNode;
+    newNode->prev = temp;
 }
-void showS(){
-    if(!sh){cout<<"Empty\n";
-    return;
-    }
-    SNode *p=sh;
-    do{cout<<p->data<<" ";
-    p=p->next;
-    }while(p!=sh);
-    cout<<"\n";
+
+void insertAfter(string name, string song) {
+    Node* temp = head;
+
+    while (temp != NULL && temp->song != name)
+        temp = temp->next;
+
+    if (temp == NULL)
+        return;
+
+    Node* newNode = new Node{song, temp, temp->next};
+
+    if (temp->next != NULL)
+        temp->next->prev = newNode;
+
+    temp->next = newNode;
 }
-void addD(int x,int pos){
-    DNode *p=new DNode(x);
-    if(!dh){dh=dt=p;
-    p->next=p->prev=p;
-    return;
-    }
-    if(pos<=1){p->next=dh;
-    p->prev=dt;
-    dt->next=p;
-    dh->prev=p;
-    dh=p;
-    return;
-    }
-    DNode *q=dh;
-    for(int i=1;
-    i<pos-1 && q->next!=dh;
-    i++) q=q->next;
-    p->next=q->next;
-    p->prev=q;
-    q->next->prev=p;
-    q->next=p;
-    if(q==dt) dt=p;
+
+void deleteSong() {
+    if (head == NULL)
+        return;
+
+    Node* temp = head;
+    head = head->next;
+
+    if (head != NULL)
+        head->prev = NULL;
+
+    delete temp;
 }
-void delD(int x){
-    if(!dh)return;
-    DNode *p=dh;
-    do{if(p->data==x)break;
-    p=p->next;
-    }while(p!=dh);
-    if(p->data!=x)return;
-    if(p==dh && dh==dt){delete p;
-    dh=dt=NULL;
-    return;
+
+void display() {
+    Node* temp = head;
+
+    while (temp != NULL) {
+        cout << temp->song << " ";
+        temp = temp->next;
     }
-    p->prev->next=p->next;
-    p->next->prev=p->prev;
-    if(p==dh) dh=p->next;
-    if(p==dt) dt=p->prev;
-    delete p;
+
+    cout << endl;
 }
-void showD(){
-    if(!dh){cout<<"Empty\n";
-    return;
-    }
-    DNode *p=dh;
-    do{cout<<p->data<<" ";
-    p=p->next;
-    }while(p!=dh);
-    cout<<"\n";
-}
-int main(){
-    int n;
-    cin>>n;
-    while(n--){
-        int type,op,x,pos;
-        cin>>type>>op;
-        if(op==1){cin>>x>>pos;
-        if(type==1)addS(x,pos);
-        else addD(x,pos);
+
+int main() {
+    int ch;
+    string song, name;
+
+    do {
+        cout << "1. Add at beginning\n2. Add at end\n3. Insert after song\n4. Remove first song\n5. Display\n0. Exit\n";
+        cin >> ch;
+
+        switch (ch) {
+            case 1:
+                cin >> song;
+                insertBegin(song);
+                break;
+
+            case 2:
+                cin >> song;
+                insertEnd(song);
+                break;
+
+            case 3:
+                cin >> name >> song;
+                insertAfter(name, song);
+                break;
+
+            case 4:
+                deleteSong();
+                break;
+
+            case 5:
+                display();
+                break;
         }
-        else if(op==2){cin>>x;
-        if(type==1)delS(x);
-        else delD(x);
-        }
-        else if(op==3){if(type==1)showS();
-        else showD();
-        }
-    }
+    } while (ch != 0);
+
+    return 0;
 }

@@ -1,87 +1,123 @@
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
-struct Node{
-    string song;
-    Node *prev,*next;
-    Node(string s){song=s;
-    prev=next=NULL;
-    }
+
+struct Node {
+    int data;
+    Node* next;
+    Node* prev;
 };
-Node *head=NULL,*tail=NULL;
-void addFirst(string s){
-    Node *p=new Node(s);
-    if(!head) head=tail=p;
-    else{p->next=head;
-    head->prev=p;
-    head=p;
+
+Node* head = NULL;
+
+void insert(int pos, int x, int type) {
+    Node* newNode = new Node{x, NULL, NULL};
+
+    if (head == NULL) {
+        head = newNode;
+        newNode->next = head;
+        if (type == 2)
+            newNode->prev = head;
+        return;
+    }
+
+    Node* temp = head;
+
+    for (int i = 1; i < pos - 1 && temp->next != head; i++)
+        temp = temp->next;
+
+    newNode->next = temp->next;
+    temp->next = newNode;
+
+    if (type == 2) {
+        newNode->prev = temp;
+        newNode->next->prev = newNode;
     }
 }
-void addLast(string s){
-    Node *p=new Node(s);
-    if(!tail) head=tail=p;
-    else{tail->next=p;
-    p->prev=tail;
-    tail=p;
-    }
-}
-void insertAfter(string cur,string s){
-    Node *q=head;
-    while(q && q->song!=cur) q=q->next;
-    if(!q){cout<<"Song not found\n";
-    return;
-    }
-    Node *p=new Node(s);
-    p->next=q->next;
-    p->prev=q;
-    if(q->next) q->next->prev=p;
-    else tail=p;
-    q->next=p;
-}
-void removeFirst(){
-    if(!head){cout<<"Playlist empty\n";
-    return;
-    }
-    Node *p=head;
-    head=head->next;
-    if(head) head->prev=NULL;
-    else tail=NULL;
-    delete p;
-}
-void display(){
-    Node *p=head;
-    while(p){cout<<p->song<<" ";
-    p=p->next;
-    }
-    cout<<"\n";
-}
-int countSongs(){
-    int n=0;
-    Node *p=head;
-    while(p){n++;
-    p=p->next;
-    }
-    return n;
-}
-int main(){
-    int q;
-    cin>>q;
-    while(q--){
-        int op;
-        cin>>op;
-        if(op==1){string s;
-        cin>>s;
-        addFirst(s);
+
+void deleteNode(int pos, int type) {
+    if (head == NULL)
+        return;
+
+    Node* temp = head;
+
+    if (pos == 1) {
+        if (head->next == head) {
+            delete head;
+            head = NULL;
+            return;
         }
-        else if(op==2){string s;
-        cin>>s;
-        addLast(s);
-        }
-        else if(op==3){string cur,s;
-        cin>>cur>>s;
-        insertAfter(cur,s);
-        }
-        else if(op==4) removeFirst();
-        else if(op==5) cout<<countSongs()<<"\n";
-        else if(op==6) display();
+
+        while (temp->next != head)
+            temp = temp->next;
+
+        Node* del = head;
+        head = head->next;
+        temp->next = head;
+
+        if (type == 2)
+            head->prev = temp;
+
+        delete del;
+        return;
     }
+
+    for (int i = 1; i < pos - 1 && temp->next != head; i++)
+        temp = temp->next;
+
+    if (temp->next == head)
+        return;
+
+    Node* del = temp->next;
+    temp->next = del->next;
+
+    if (type == 2)
+        del->next->prev = temp;
+
+    delete del;
+}
+
+void display() {
+    if (head == NULL) {
+        cout << "List is empty\n";
+        return;
+    }
+
+    Node* temp = head;
+
+    do {
+        cout << temp->data << " ";
+        temp = temp->next;
+    } while (temp != head);
+
+    cout << endl;
+}
+
+int main() {
+    int ch, type, pos, x;
+
+    cout << "1. Circular Linked List\n2. Doubly Circular Linked List\n";
+    cin >> type;
+
+    do {
+        cout << "1. Join student\n2. Leave student\n3. Display circle\n0. Exit\n";
+        cin >> ch;
+
+        switch (ch) {
+            case 1:
+                cin >> pos >> x;
+                insert(pos, x, type);
+                break;
+
+            case 2:
+                cin >> pos;
+                deleteNode(pos, type);
+                break;
+
+            case 3:
+                display();
+                break;
+        }
+    } while (ch != 0);
+
+    return 0;
 }

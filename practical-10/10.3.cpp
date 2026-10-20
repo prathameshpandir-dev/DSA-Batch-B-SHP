@@ -1,30 +1,39 @@
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
-int main(){
-    const int n=10;
-    int table[n];
-    fill(table,table+n,-1);
-    int q;
-    cin>>q;
-    while(q--){
-        int x;
-        cin>>x;
-        int h1=x%n;
-        int h2=n-(x%n);
-        if(h2==0) h2=1;
-        int pos=-1;
-        for(int i=0;
-        i<n;
-        i++){
-            int p=(h1+i*h2)%n;
-            if(table[p]==-1){pos=p;
-            break;
-            }
+
+int main() {
+    int hash[10], n, x;
+
+    for (int i = 0; i < 10; i++)
+        hash[i] = -1;
+
+    cout << "Enter number of students: ";
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        cout << "Enter student ID: ";
+        cin >> x;
+
+        int h1 = x % 10;
+        int h2 = 7 - (x % 7);
+        int pos = h1;
+        int j = 0;
+
+        while (hash[pos] != -1 && j < 10) {
+            j++;
+            pos = (h1 + j * h2) % 10;
         }
-        if(pos==-1) cout<<"Full\n";
-        else table[pos]=x;
+
+        if (j == 10)
+            cout << "Hash table is full\n";
+        else
+            hash[pos] = x;
     }
-    for(int i=0;
-    i<n;
-    i++) cout<<i<<": "<<table[i]<<"\n";
+
+    cout << "Hash table:\n";
+
+    for (int i = 0; i < 10; i++)
+        cout << i << " : " << hash[i] << endl;
+
+    return 0;
 }

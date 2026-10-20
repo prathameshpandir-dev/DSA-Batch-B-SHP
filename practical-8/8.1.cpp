@@ -1,58 +1,83 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <queue>
 using namespace std;
-struct Node{
+
+struct Node {
     int data;
-    Node *left,*right;
-    Node(int x){data=x;
-    left=right=NULL;
-    }
+    Node *left, *right;
 };
-Node *root=NULL;
-Node *insertNode(Node *p,int x){
-    if(!p)return new Node(x);
-    if(x<p->data)p->left=insertNode(p->left,x);
-    else if(x>p->data)p->right=insertNode(p->right,x);
-    return p;
+
+Node* create(int x) {
+    Node* newNode = new Node{x, NULL, NULL};
+    return newNode;
 }
-void inorder(Node *p){if(p){inorder(p->left);
-cout<<p->data<<" ";
-inorder(p->right);
-}}
-void preorder(Node *p){if(p){cout<<p->data<<" ";
-preorder(p->left);
-preorder(p->right);
-}}
-void postorder(Node *p){if(p){postorder(p->left);
-postorder(p->right);
-cout<<p->data<<" ";
-}}
-void levelorder(Node *p){
-    if(!p)return;
+
+void preorder(Node* root) {
+    if (root == NULL)
+        return;
+
+    cout << root->data << " ";
+    preorder(root->left);
+    preorder(root->right);
+}
+
+void inorder(Node* root) {
+    if (root == NULL)
+        return;
+
+    inorder(root->left);
+    cout << root->data << " ";
+    inorder(root->right);
+}
+
+void postorder(Node* root) {
+    if (root == NULL)
+        return;
+
+    postorder(root->left);
+    postorder(root->right);
+    cout << root->data << " ";
+}
+
+void levelorder(Node* root) {
+    if (root == NULL)
+        return;
+
     queue<Node*> q;
-    q.push(p);
-    while(!q.empty()){
-        Node *x=q.front();
+    q.push(root);
+
+    while (!q.empty()) {
+        Node* temp = q.front();
         q.pop();
-        cout<<x->data<<" ";
-        if(x->left)q.push(x->left);
-        if(x->right)q.push(x->right);
+
+        cout << temp->data << " ";
+
+        if (temp->left != NULL)
+            q.push(temp->left);
+
+        if (temp->right != NULL)
+            q.push(temp->right);
     }
 }
-int main(){
-    int n;
-    cin>>n;
-    for(int i=0;
-    i<n;
-    i++){int x;
-    cin>>x;
-    root=insertNode(root,x);
-    }
-    inorder(root);
-    cout<<"\n";
+
+int main() {
+    Node* root = create(1);
+    root->left = create(2);
+    root->right = create(3);
+    root->left->left = create(4);
+    root->left->right = create(5);
+
+    cout << "Preorder: ";
     preorder(root);
-    cout<<"\n";
+
+    cout << "\nInorder: ";
+    inorder(root);
+
+    cout << "\nPostorder: ";
     postorder(root);
-    cout<<"\n";
+
+    cout << "\nLevel order: ";
     levelorder(root);
-    cout<<"\n";
+
+    return 0;
 }

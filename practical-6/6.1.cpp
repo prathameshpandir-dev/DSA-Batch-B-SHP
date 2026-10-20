@@ -1,29 +1,49 @@
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
-int main(){
-    int n;
-    cin>>n;
-    vector<int> st(n);
-    int top=-1,q;
-    cin>>q;
-    while(q--){
-        int op;
-        cin>>op;
-        if(op==1){
-            int x;
-            cin>>x;
-            if(top==n-1) cout<<"Overflow\n";
-            else{st[++top]=x;
-            cout<<st[top]<<"\n";
-            }
-        }else if(op==2){
-            if(top==-1) cout<<"Underflow\n";
-            else{cout<<st[top]<<"\n";
-            top--;
-            }
-        }else if(op==3){
-            if(top==-1) cout<<"Empty\n";
-            else cout<<st[top]<<"\n";
+
+int st[100], top = -1, n;
+
+void push(int x) {
+    if (top == n - 1)
+        cout << "Stack Overflow\n";
+    else
+        st[++top] = x;
+}
+
+void pop() {
+    if (top == -1)
+        cout << "Stack Underflow\n";
+    else
+        top--;
+}
+
+void display() {
+    if (top == -1)
+        cout << "Stack is empty\n";
+    else
+        cout << st[top] << endl;
+}
+
+int main() {
+    int ch, x;
+    cin >> n;
+
+    do {
+        cin >> ch;
+
+        switch (ch) {
+            case 1:
+                cin >> x;
+                push(x);
+                break;
+            case 2:
+                pop();
+                break;
+            case 3:
+                display();
+                break;
         }
-    }
+    } while (ch != 0);
+
+    return 0;
 }
